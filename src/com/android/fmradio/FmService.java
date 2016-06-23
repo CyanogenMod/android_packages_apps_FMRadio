@@ -510,6 +510,10 @@ public class FmService extends Service implements FmRecorder.OnRecorderStateChan
                         if (isRender()) {
                             mAudioTrack.write(tmpBuf, 0, tmpBuf.length);
                         }
+
+                        if (mFmRecorder != null) {
+                            mFmRecorder.encode(tmpBuf);
+                        }
                     } else {
                         // Earphone mode will come here and wait.
                         mCurrentFrame = 0;
@@ -1110,7 +1114,7 @@ public class FmService extends Service implements FmRecorder.OnRecorderStateChan
         }
 
         if (mFmRecorder == null) {
-            mFmRecorder = new FmRecorder();
+            mFmRecorder = new FmRecorder(mAudioRecord.getFormat());
             mFmRecorder.registerRecorderStateListener(FmService.this);
         }
 
